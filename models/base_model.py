@@ -2,39 +2,22 @@
 """BaseModel class to define a foundation for other classes"""
 import uuid
 from datetime import datetime
-# from cmd import Cmd
 import models
 
 class BaseModel:
     """
     The foundation class.
-
-    Attributes:
-        - id (str): unique identifier for each instance.
-        - created_at (datetime): timestamp at creation.
-        - updated_at (datetime): timestamp update.
-
-    Methods:
-        - __init__: Initializes a new instance of the class.
-        - __str__: a string representation.
-        - save: saves the instance to storage & Updates the 'updated_at'.
-        - to_dict: Converts the instance to a dictionary for serialization.
     """
 
     def __init__(self, *args, **kwargs):
         """
         Initialize a new instance of the BaseModel class.
-
-        Args:
-            - *args: arguments -not used.
-            - **kwargs: keyword arguments for deserialization.
         """
         if kwargs:
             for key, value in kwargs.items():
                 if key == "__class__":
                     continue
                 elif key in ["created_at", "updated_at"] :
-                    '''Convert created_at and updated_at strings to datetime objects'''
                     setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
                 
                 else:
@@ -52,23 +35,9 @@ class BaseModel:
         return f"[{class_name}] ({self.id}) {self.__dict__}"
 
     def save(self):
+        """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
         models.storage.save()
-
-    # def to_dict(self):
-    #     """Return a dictionary representation of the instance."""
-    #     class_name = self.__class__.__name__
-    #     formatted_created_at = self.created_at.isoformat()
-    #     formatted_updated_at = self.updated_at.isoformat()
-
-    #     obj_dict = {
-    #         "__class__": class_name,
-    #         "created_at": formatted_created_at,
-    #         "updated_at": formatted_updated_at
-    #     }
-
-    #     obj_dict.update(self.__dict__)
-    #     return obj_dict
 
     def to_dict(self):
         """Return a dictionary representation of the instance."""
