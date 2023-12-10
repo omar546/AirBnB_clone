@@ -24,7 +24,11 @@ class HBNBCommand(cmd.Cmd):
 
     def help_EOF(self):
         """ Prints the help documentation for EOF  """
-        print("Exits the program without  formatting\n")
+        print("Exits the program without formatting\n")
+
+    def emptyline(self):
+        """ Overrides the emptyline method of CMD """
+        pass
 
 
 if __name__ == '__main__':
