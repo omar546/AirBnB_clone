@@ -152,49 +152,34 @@ class HBNBCommand(cmd.Cmd):
                     return_list.append(str(value))
             print(return_list)
 
-    def help_all(self):
-        """ Help information for the all command """
-        print("Shows all objects, or all of a class")
-        print("[Usage]: all <className>\n")
-
+    
     def do_update(self, args):
-        new = args.partition(" ")
-        class_name = new[0]
-        new = new[2].partition(" ")
-        class_id = new[0]
-        new = new[2].partition(" ")
-        class_valriable = new[0]
-        class_value = new[2]
-        print(class_name)
-        print(class_id)
-        print(class_valriable)
-        print(class_value)
-
-        our_id = f"{class_name}.{class_id}"
-        storage.reload()
-        print(storage.all())
-
-        if class_id and ' ' in class_id:
-            class_id = class_id.partition(' ')[0]
-
-        if (not class_name):
+        """
+        Usage: Usage: update <class> <id> <attribute_name> <attribute_value>
+        Updates an instance based on the class name and id
+        by adding or updating attribute.
+        """
+        args = args.split()
+        all = storage.all()
+        if len(args) < 1:
             print("** class name missing **")
-            return
-        elif (not class_id):
-            print("** instance id missing **")
-            return
-        elif (class_name not in self.classes):
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
-            return
-        elif our_id not in storage.all():
+        elif len(args) < 2:
+            print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in all:
             print("** no instance found **")
-            return
+        elif len(args) < 3:
+            print("** attribute name missing **")
+        elif len(args) < 4:
+            print("** value missing **")
         else:
-            our_class = storage.all()[our_id]
-            our_class.class_valriable = class_value
-            new_value = class_value
-            setattr(our_class, class_valriable, new_value)
-            our_class.save()
+            our_object = all[f"{args[0]}.{args[1]}"]
+            if args[2] in our_object.__dict__.keys():
+                val_type = type(our_object.__dict__[args[2]])
+                our_object.__dict__[args[2]] = val_type(args[3])
+            else:
+                our_object.__dict__[args[2]] = args[3]
             storage.save()
 
 
