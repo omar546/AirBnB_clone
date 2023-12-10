@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 
 """FileStorage class Module"""
-
-from models.base_model import BaseModel
-import datetime
-import os
 import json
 
 
@@ -14,19 +10,21 @@ class FileStorage:
 
     def all(self):
         """return all objects"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """add new object"""
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.__objects[f"{obj.__class__.__name__}. {obj.id}"] = obj
 
     def save(self):
-        """save to JSON"""
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as fi:
-            di = {ky: val.to_dict()
-                  for ky, val in FileStorage.__objects.items()}
-            json.dump(di, fi)
+        """Serializes __objects to the JSON file (path: __file_path)."""
+        serialized_objects = {}
+        for key, value in self.__objects.items():
+            serialized_objects[key] = value.to_dict()
+
+        with open(self.__file_path, 'w', encoding='utf-8') as file:
+            json.dump(serialized_objects, file)
+
 
     def reload(self):
         from models.base_model import BaseModel
@@ -44,11 +42,11 @@ class FileStorage:
                    "Amenity": Amenity,
                    "Place": Place,
                    "Review": Review, }
+        serialized_objects = {}
         try:
-            with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-                obj_dict = json.load(f)
-                obj_dict = {k: classes[v["__class__"]](**v)
-                            for k, v in obj_dict.items()}
-                FileStorage.__objects = obj_dict
+            with open(FileStorage.__file_path, 'r') as file:
+                serialized_objects = json.load(file)
+                for key, val in serialized_objects.items():
+                        self.__objects[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass

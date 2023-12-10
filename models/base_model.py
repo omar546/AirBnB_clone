@@ -30,7 +30,6 @@ class BaseModel:
 
     def __str__(self):
         """Return a string representation of the BaseModel instance."""
-
         class_name = self.__class__.__name__
         return f"[{class_name}] ({self.id}) {self.__dict__}"
 
@@ -56,3 +55,4 @@ class BaseModel:
                 obj_dict[key] = value
 
         return obj_dict
+
