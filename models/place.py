@@ -20,4 +20,3 @@ class Place(BaseModel):
     user_id = ""
     max_guest = 0
     price_by_night = 0
-

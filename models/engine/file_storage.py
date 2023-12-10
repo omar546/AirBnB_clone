@@ -25,7 +25,6 @@ class FileStorage:
         with open(self.__file_path, 'w', encoding='utf-8') as file:
             json.dump(serialized_objects, file)
 
-
     def reload(self):
         from models.base_model import BaseModel
         from models.user import User
@@ -47,6 +46,6 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as file:
                 serialized_objects = json.load(file)
                 for key, val in serialized_objects.items():
-                        self.__objects[key] = classes[val['__class__']](**val)
+                    self.__objects[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass

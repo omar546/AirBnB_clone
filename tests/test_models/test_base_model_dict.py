@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 from models.base_model import BaseModel
-import sys
-# sys.path.append('/home/mekkawy/AirBnB_clone')
-
 
 my_model = BaseModel()
 my_model.name = "My_First_Model"

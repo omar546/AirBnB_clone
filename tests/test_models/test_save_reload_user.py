@@ -2,9 +2,6 @@
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
-import sys
-# sys.path.append('/home/mekkawy/ALX/AirBnB_clone')
-
 
 all_objs = storage.all()
 print("-- Reloaded objects --")
