@@ -171,6 +171,8 @@ class HBNBCommand(cmd.Cmd):
         print(class_value)
 
         our_id = f"{class_name}.{class_id}"
+        storage.reload()
+        print(storage.all())
 
         if class_id and ' ' in class_id:
             class_id = class_id.partition(' ')[0]
@@ -190,6 +192,9 @@ class HBNBCommand(cmd.Cmd):
         else:
             our_class = storage.all()[our_id]
             our_class.class_valriable = class_value
+            new_value = class_value
+            setattr(our_class, class_valriable, new_value)
+            our_class.save()
             storage.save()
 
 
