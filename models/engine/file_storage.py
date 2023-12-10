@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """FileStorage class Module"""
 
 from models import storage
@@ -12,18 +14,22 @@ class FileStorage:
     __objects = {}
 
     def all(self):
+        """return all objects"""
         return FileStorage.__objects
 
     def new(self, obj):
+        """add new object"""
         key = "{}.{}".format(type(obj).__name__, obj.id)
         FileStorage.__objects[key] = obj
 
     def save(self):
+        """save to JSON"""
         with open(FileStorage.__file_path, "w", encoding="utf-8") as fi:
             di = {ky: val.to_dict() for ky, val in FileStorage.__objects.items()}
             json.dump(di, fi)
 
     def reload(self):
+        """reload from JSON"""
         if not os.path.isfile(FileStorage.__file_path):
             return
         with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
