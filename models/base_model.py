@@ -2,7 +2,6 @@
 import uuid
 from datetime import datetime
 from cmd import Cmd
-import models
 
 
 class BaseModel(Cmd):
@@ -43,7 +42,6 @@ class BaseModel(Cmd):
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            models.storage.new(self)
 
     def __str__(self):
         """Return a string representation of the BaseModel instance."""
@@ -53,7 +51,6 @@ class BaseModel(Cmd):
 
     def save(self):
         self.updated_at = datetime.now()
-        models.storage.save()
 
     # def to_dict(self):
     #     """Return a dictionary representation of the instance."""
