@@ -67,6 +67,7 @@ class HBNBCommand(cmd.Cmd):
             storage.new(temp)
             storage.save()
             print(temp.id)
+            temp.save()
 
     def help_create():
         """Prints the help document for the create"""
@@ -181,6 +182,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 our_object.__dict__[args[2]] = args[3]
             storage.save()
+            our_object.save()
 
 
 if __name__ == '__main__':
